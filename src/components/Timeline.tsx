@@ -1,12 +1,11 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Heart, Music, Camera, Utensils, PartyPopper } from 'lucide-react';
+import { Church, GlassWater } from 'lucide-react';
+import { WEDDING } from '../config';
 
 const events = [
-  { time: '09:00 AM', title: 'Poruwa Ceremony', icon: Music, desc: 'The traditional and sacred Poruwa ceremony at Hilton Colombo' },
-  { time: '10:00 AM', title: 'Function Starts', icon: Heart, desc: 'A warm welcome to our loved ones' },
-  { time: '12:30 PM', title: 'Buffet opening', icon: Utensils, desc: 'A grand celebratory feast' },
-  { time: '04:00 PM', title: 'Wedding send off', icon: PartyPopper, desc: 'Farewell as we begin our journey together' },
+  { time: WEDDING.ceremony.timeShort, title: WEDDING.ceremony.title, icon: Church, desc: `${WEDDING.ceremony.venue}, ${WEDDING.ceremony.area}` },
+  { time: WEDDING.reception.timeShort, title: WEDDING.reception.title, icon: GlassWater, desc: `${WEDDING.reception.venue}, ${WEDDING.reception.area}` },
 ];
 
 export const Timeline: React.FC = () => {

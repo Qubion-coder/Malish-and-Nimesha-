@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Send, Loader2, Sparkles } from 'lucide-react';
+import { SCRIPT_URL } from '../config';
+import { getGuestName } from '../guest';
 
 interface Wish {
   id: string;
@@ -21,8 +23,30 @@ const getRelativeTime = (date: Date) => {
 
 export const WishesSection: React.FC = () => {
   const [wishes, setWishes] = useState<Wish[]>([]);
-  const [formData, setFormData] = useState({ name: '', message: '' });
+  const [formData, setFormData] = useState({ name: getGuestName(), message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Load previously shared wishes from the Google Sheet
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${SCRIPT_URL}?action=wishes`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled || !data?.ok || !Array.isArray(data.wishes)) return;
+        setWishes(
+          data.wishes.map((w: { name: string; message: string; timestamp: string }, i: number) => ({
+            id: `${w.timestamp}-${i}`,
+            name: w.name,
+            message: w.message,
+            createdAt: new Date(w.timestamp),
+          })),
+        );
+      })
+      .catch((error) => console.error('Error loading wishes: ', error));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,13 +55,12 @@ export const WishesSection: React.FC = () => {
 
     try {
       // Send data to Google Sheets
-      const scriptUrl = 'https://script.google.com/macros/s/AKfycbyay20jbF63BRUj8JGGbUbYkYS3Us-DpLZc2Hs34si_qKJgxs_81xpNBniXsBNFsYOt7g/exec';
       const payload = new FormData();
       payload.append('sheet', 'Wishes');
       payload.append('name', formData.name);
       payload.append('message', formData.message);
 
-      await fetch(scriptUrl, {
+      await fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         body: payload,
@@ -52,7 +75,7 @@ export const WishesSection: React.FC = () => {
       
       // Prepend the new wish to the list
       setWishes(prev => [newWish, ...prev]);
-      setFormData({ name: '', message: '' });
+      setFormData({ name: formData.name, message: '' });
     } catch (error) {
       console.error('Error submitting wish: ', error);
     } finally {

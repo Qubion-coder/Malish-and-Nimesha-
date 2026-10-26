@@ -1,8 +1,12 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Heart } from 'lucide-react';
+import { WEDDING } from '../config';
+import { getGuestName } from '../guest';
 
 export const CoupleDetails: React.FC = () => {
+  const guestName = getGuestName();
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
       {/* Decorative ambient background */}
@@ -14,31 +18,55 @@ export const CoupleDetails: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
+          className="max-w-3xl mx-auto"
         >
-          <div className="inline-flex items-center gap-4 mb-6 mt-4">
-            <div className="w-12 sm:w-20 h-[1px] bg-gradient-to-r from-transparent to-brand-beige-deep/60" />
-            <span className="text-brand-beige-deep uppercase tracking-[0.5em] text-[11px] font-semibold font-sans drop-shadow-sm">The Protagonists</span>
-            <div className="w-12 sm:w-20 h-[1px] bg-gradient-to-l from-transparent to-brand-beige-deep/60" />
-          </div>
-          <h2 className="text-5xl sm:text-7xl font-display text-stone-800 tracking-tight drop-shadow-sm">
-            Isuri <span className="italic text-brand-beige-deep font-light mx-2">&</span>&nbsp;Duvindu
+          {/* Scripture */}
+          <p className="font-serif italic text-lg sm:text-2xl text-stone-600 leading-relaxed mb-2">
+            &ldquo;{WEDDING.verse}&rdquo;
+          </p>
+          <p className="text-brand-beige-deep uppercase tracking-[0.4em] text-[10px] sm:text-[11px] font-semibold font-sans mb-12">
+            ({WEDDING.verseRef})
+          </p>
+
+          <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-brand-beige-deep/50 to-transparent mx-auto mb-12" />
+
+          {/* Parents */}
+          <p className="font-serif text-xl sm:text-2xl text-stone-800 mb-1">{WEDDING.hostParents}</p>
+          <p className="font-serif italic text-base sm:text-lg text-stone-500 mb-1">Together with</p>
+          <p className="font-serif text-xl sm:text-2xl text-stone-800 mb-10">{WEDDING.coHostParents}</p>
+
+          <p className="text-stone-500/90 uppercase tracking-[0.3em] text-[10px] sm:text-[11px] font-semibold font-sans mb-4">
+            Request the honour of the presence of
+          </p>
+          <p className="font-display text-3xl sm:text-5xl text-brand-beige-deep mb-3 min-h-[1.2em] px-2 break-words">
+            {guestName || 'Our Beloved Guest'}
+          </p>
+          <div className="w-48 sm:w-72 border-b border-dotted border-brand-beige-deep/50 mx-auto mb-10" />
+
+          <p className="text-stone-500/90 uppercase tracking-[0.3em] text-[10px] sm:text-[11px] font-semibold font-sans mb-6">
+            At the marriage of their beloved children
+          </p>
+
+          <h2 className="text-5xl sm:text-7xl font-display text-stone-800 tracking-tight drop-shadow-sm mb-6">
+            {WEDDING.groomName} <span className="italic text-brand-beige-deep font-light mx-2">&</span>&nbsp;{WEDDING.brideName}
           </h2>
+
+          <p className="font-serif text-lg sm:text-2xl text-stone-700">On {WEDDING.dateLong}</p>
         </motion.div>
       </div>
 
       <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-8 relative z-10">
-        {/* Groom Details (Left on Desktop, Bottom on Mobile) */}
+        {/* Groom Details (Left on Desktop, first under the photo on Mobile) */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-          className="text-center lg:text-right flex-1 lg:pr-10 order-4 lg:order-1"
+          className="text-center lg:text-right flex-1 lg:pr-10 order-2 lg:order-1"
         >
           <div className="mb-4 flex flex-col items-center lg:items-end">
             <span className="text-brand-beige-deep uppercase tracking-[0.4em] text-[10px] font-bold mb-3 block">The Groom</span>
-            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm">Duvindu</h3>
-            <p className="text-stone-500/90 font-serif italic text-base sm:text-lg">Son of Mr & Mrs Abeysekara</p>
+            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm">{WEDDING.groomName}</h3>
           </div>
           <div className="hidden lg:flex justify-end mt-8">
             <Heart className="w-6 h-6 text-brand-beige/60 fill-brand-beige/20 transform hover:scale-110 transition-transform cursor-pointer" />
@@ -63,7 +91,7 @@ export const CoupleDetails: React.FC = () => {
                 e.currentTarget.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800&h=1000";
                 e.currentTarget.onerror = null;
               }}
-              alt="Isuri and Duvindu"
+              alt={`${WEDDING.groomName} and ${WEDDING.brideName}`}
               className="w-full h-full object-cover mix-blend-multiply transition-transform duration-[1.5s] ease-out group-hover:scale-105"
             />
             {/* Elegant inner shadow & overlay */}
@@ -76,7 +104,7 @@ export const CoupleDetails: React.FC = () => {
           <Sparkles className="absolute bottom-10 -right-4 w-6 h-6 text-brand-beige animate-pulse delay-300 drop-shadow-sm z-20" />
         </motion.div>
 
-        {/* Mobile divider between image and groom */}
+        {/* Mobile divider between groom and bride */}
         <div className="lg:hidden order-3 w-full flex justify-center py-4 opacity-50">
           <div className="w-1/2 h-px bg-gradient-to-r from-transparent via-brand-beige-deep/40 to-transparent" />
         </div>
@@ -87,12 +115,11 @@ export const CoupleDetails: React.FC = () => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
-          className="text-center lg:text-left flex-1 lg:pl-10 order-2 lg:order-3"
+          className="text-center lg:text-left flex-1 lg:pl-10 order-4 lg:order-3"
         >
           <div className="mb-4 flex flex-col items-center lg:items-start">
             <span className="text-brand-beige-deep uppercase tracking-[0.4em] text-[10px] font-bold mb-3 block">The Bride</span>
-            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm">Isuri</h3>
-            <p className="text-stone-500/90 font-serif italic text-base sm:text-lg">Daughter of Mr & Mrs Perera</p>
+            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm">{WEDDING.brideName}</h3>
           </div>
           <div className="hidden lg:flex justify-start mt-8">
             <Heart className="w-6 h-6 text-brand-beige/60 fill-brand-beige/20 transform hover:scale-110 transition-transform cursor-pointer" />

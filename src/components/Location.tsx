@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { MapPin, Navigation, Compass, Map } from 'lucide-react';
+import { WEDDING, mapEmbedUrl } from '../config';
+
+const venues = [WEDDING.ceremony, WEDDING.reception];
 
 export const Location: React.FC = () => {
-  const venueAddress = "Hilton Colombo";
-  const mapUrl = `https://maps.google.com/maps?q=Hilton+Colombo&t=&z=14&ie=UTF8&iwloc=&output=embed`;
-  const liveLocationUrl = "https://maps.app.goo.gl/d7QQvgGSUQEUGNzx5";
+  const [active, setActive] = useState(0);
+  const activeVenue = venues[active];
 
   return (
     <div className="max-w-[85rem] mx-auto px-6 relative py-12">
@@ -40,28 +42,36 @@ export const Location: React.FC = () => {
                 <span className="italic font-light text-brand-beige-deep">Celebrate</span>
               </h2>
 
-              <div className="flex items-start gap-5 mt-10">
-                <div className="w-12 h-12 bg-stone-50 rounded-full border border-brand-beige/40 shadow-inner flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
-                  <MapPin className="text-brand-beige-deep w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-2xl font-serif text-stone-800 mb-1">Hilton Colombo</p>
-                  <p className="text-[11px] uppercase tracking-[0.2em] font-medium text-stone-400 leading-relaxed mb-6">Colombo</p>
-                  
-                  <p className="text-stone-500/90 italic font-serif text-lg leading-relaxed max-w-sm mb-10 pl-4 border-l-[1.5px] border-brand-beige/40">
-                    "A serene and elegant setting where we will begin our new chapter together."
-                  </p>
-
-                  <a
-                    href={liveLocationUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-3 bg-stone-800 text-brand-champagne px-8 py-4 rounded-full font-sans tracking-[0.2em] text-xs uppercase hover:bg-stone-900 hover:shadow-[0_10px_20px_rgba(0,0,0,0.2)] transition-all duration-300 active:scale-95 group/btn"
+              <div className="space-y-8 mt-10">
+                {venues.map((venue, index) => (
+                  <div
+                    key={venue.title}
+                    onClick={() => setActive(index)}
+                    className={`flex items-start gap-5 cursor-pointer rounded-2xl p-4 -m-4 transition-colors duration-500 ${active === index ? 'bg-brand-champagne/40' : 'hover:bg-brand-champagne/20'}`}
                   >
-                    <Navigation className="w-4 h-4 text-brand-gold group-hover/btn:rotate-45 transition-transform duration-300" />
-                    Open Live Location
-                  </a>
-                </div>
+                    <div className="w-12 h-12 bg-stone-50 rounded-full border border-brand-beige/40 shadow-inner flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
+                      <MapPin className="text-brand-beige-deep w-5 h-5" />
+                    </div>
+                    <div>
+                      <span className="text-brand-beige-deep uppercase tracking-[0.3em] text-[10px] font-bold block mb-1">{venue.title}</span>
+                      <p className="text-2xl font-serif text-stone-800 mb-1">{venue.venue}</p>
+                      <p className="text-[11px] uppercase tracking-[0.2em] font-medium text-stone-400 leading-relaxed mb-5">
+                        {venue.area} · {venue.time}
+                      </p>
+
+                      <a
+                        href={venue.mapLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-3 bg-stone-800 text-brand-champagne px-6 py-3 rounded-full font-sans tracking-[0.2em] text-[10px] sm:text-xs uppercase hover:bg-stone-900 hover:shadow-[0_10px_20px_rgba(0,0,0,0.2)] transition-all duration-300 active:scale-95 group/btn"
+                      >
+                        <Navigation className="w-4 h-4 text-brand-gold group-hover/btn:rotate-45 transition-transform duration-300" />
+                        Open Live Location
+                      </a>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -85,8 +95,9 @@ export const Location: React.FC = () => {
             <div className="absolute inset-0 bg-brand-beige/10 mix-blend-multiply pointer-events-none z-20 group-hover/map:opacity-0 transition-opacity duration-1000" />
             
             <iframe
-              title="Hilton Colombo Location"
-              src={mapUrl}
+              key={activeVenue.title}
+              title={`${activeVenue.venue} Location`}
+              src={mapEmbedUrl(activeVenue.mapEmbedQuery)}
               width="100%"
               height="100%"
               style={{ border: 0, filter: 'contrast(1.1) saturate(1.2)' }}
@@ -99,7 +110,7 @@ export const Location: React.FC = () => {
             {/* Decorative Location Pin Overlay */}
             <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-brand-beige/30 shadow-lg flex items-center gap-2 pointer-events-none z-30">
               <Map className="w-4 h-4 text-brand-beige-deep animate-pulse" />
-              <span className="text-[9px] uppercase tracking-widest font-bold text-stone-600">Live Map</span>
+              <span className="text-[9px] uppercase tracking-widest font-bold text-stone-600">{activeVenue.title}</span>
             </div>
           </div>
         </motion.div>
