@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { Sparkles, Heart } from 'lucide-react';
 import { FloatingPetals } from './FloatingPetals';
 import { WEDDING } from '../config';
+import { CoupleName } from './CoupleName';
 import { getGuestName } from '../guest';
 
 export const Hero: React.FC = () => {
@@ -65,10 +66,10 @@ export const Hero: React.FC = () => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[140%] bg-white/40 blur-[50px] sm:blur-[80px] rounded-full pointer-events-none" />
 
             <h1 className="relative text-6xl sm:text-[7rem] lg:text-[9.5rem] font-display text-stone-800 leading-[1.1] sm:leading-[0.9] drop-shadow-sm">
-              {WEDDING.groomName} <br className="sm:hidden" />
+              <CoupleName name={WEDDING.groomName} /> <br className="sm:hidden" />
               <span className="text-brand-beige-deep italic font-light mx-2 sm:mx-6 text-5xl sm:text-[6rem] lg:text-[8rem] inline-block -translate-y-2 sm:-translate-y-6">&</span>
               <br className="sm:hidden" />
-              &nbsp;{WEDDING.brideName}
+              &nbsp;<CoupleName name={WEDDING.brideName} />
             </h1>
           </div>
 

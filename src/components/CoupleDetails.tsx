@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Heart } from 'lucide-react';
 import { WEDDING } from '../config';
+import { CoupleName } from './CoupleName';
 import { getGuestName } from '../guest';
 
 export const CoupleDetails: React.FC = () => {
@@ -48,7 +49,7 @@ export const CoupleDetails: React.FC = () => {
           </p>
 
           <h2 className="text-5xl sm:text-7xl font-display text-stone-800 tracking-tight drop-shadow-sm mb-6">
-            {WEDDING.groomName} <span className="italic text-brand-beige-deep font-light mx-2">&</span>&nbsp;{WEDDING.brideName}
+            <CoupleName name={WEDDING.groomName} /> <span className="italic text-brand-beige-deep font-light mx-2">&</span>&nbsp;<CoupleName name={WEDDING.brideName} />
           </h2>
 
           <p className="font-serif text-lg sm:text-2xl text-stone-700">On {WEDDING.dateLong}</p>
@@ -66,7 +67,7 @@ export const CoupleDetails: React.FC = () => {
         >
           <div className="mb-4 flex flex-col items-center lg:items-end">
             <span className="text-brand-beige-deep uppercase tracking-[0.4em] text-[10px] font-bold mb-3 block">The Groom</span>
-            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm">{WEDDING.groomName}</h3>
+            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm"><CoupleName name={WEDDING.groomName} /></h3>
           </div>
           <div className="hidden lg:flex justify-end mt-8">
             <Heart className="w-6 h-6 text-brand-beige/60 fill-brand-beige/20 transform hover:scale-110 transition-transform cursor-pointer" />
@@ -119,7 +120,7 @@ export const CoupleDetails: React.FC = () => {
         >
           <div className="mb-4 flex flex-col items-center lg:items-start">
             <span className="text-brand-beige-deep uppercase tracking-[0.4em] text-[10px] font-bold mb-3 block">The Bride</span>
-            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm">{WEDDING.brideName}</h3>
+            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm"><CoupleName name={WEDDING.brideName} /></h3>
           </div>
           <div className="hidden lg:flex justify-start mt-8">
             <Heart className="w-6 h-6 text-brand-beige/60 fill-brand-beige/20 transform hover:scale-110 transition-transform cursor-pointer" />

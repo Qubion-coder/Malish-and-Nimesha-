@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { WEDDING } from "../config";
+import { CoupleName } from "./CoupleName";
 import { getGuestName } from "../guest";
 
 export function EnvelopeOpening({ onComplete, onMusicStart }: { onComplete: () => void, onMusicStart?: () => void }) {
@@ -422,9 +423,9 @@ export function EnvelopeOpening({ onComplete, onMusicStart }: { onComplete: () =
               </div>
 
               <h1 className="text-names">
-                {WEDDING.groomName}
+                <CoupleName name={WEDDING.groomName} />
                 <span className="text-ampersand">&</span>
-                &nbsp;{WEDDING.brideName}
+                &nbsp;<CoupleName name={WEDDING.brideName} />
               </h1>
 
               <div className="divider">
